@@ -11,6 +11,9 @@ namespace Vigil
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
+        Texture2D texture;
+        float verticalScale = 0.001f;
+        float horizontalScale = 0.001f;
 
         public Game1()
         {
@@ -39,6 +42,7 @@ namespace Vigil
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
+            texture = this.Content.Load<Texture2D>("spaceship");
 
             // TODO: use this.Content to load your game content here
         }
@@ -50,6 +54,7 @@ namespace Vigil
         protected override void UnloadContent()
         {
             // TODO: Unload any non ContentManager content here
+            Content.Unload();
         }
 
         /// <summary>
@@ -62,6 +67,8 @@ namespace Vigil
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
+            verticalScale *= 1.05f;
+            horizontalScale *= 1.05f;
             // TODO: Add your update logic here
 
             base.Update(gameTime);
@@ -75,7 +82,11 @@ namespace Vigil
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
-            // TODO: Add your drawing code here
+            spriteBatch.Begin();
+
+            Vector2 scale = new Vector2(horizontalScale, verticalScale);
+            spriteBatch.Draw(texture, Vector2.Zero, null, null, null, 0, scale);
+            spriteBatch.End();
 
             base.Draw(gameTime);
         }
