@@ -11,9 +11,10 @@ namespace Vigil
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
+        InputHandler inputHandler = new InputHandler();
+        Vector2 playerPosition;
+        Vector2 playerSpeed;
         Texture2D texture;
-        float verticalScale = 0.001f;
-        float horizontalScale = 0.001f;
 
         public Game1()
         {
@@ -32,6 +33,11 @@ namespace Vigil
             // TODO: Add your initialization logic here
 
             base.Initialize();
+            playerPosition = new Vector2(
+                graphics.GraphicsDevice.Viewport.Width / 2 - 64,
+                graphics.GraphicsDevice.Viewport.Height / 2 - 64
+            );
+            playerSpeed = new Vector2();
         }
 
         /// <summary>
@@ -64,12 +70,11 @@ namespace Vigil
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
-                Exit();
+            // Parse current keyboard state and update player speed
+            playerSpeed += inputHandler.Parse( out bool exit);
 
-            verticalScale *= 1.05f;
-            horizontalScale *= 1.05f;
-            // TODO: Add your update logic here
+            // Update player position based on speed
+            playerPosition += playerSpeed;
 
             base.Update(gameTime);
         }
@@ -83,9 +88,7 @@ namespace Vigil
             GraphicsDevice.Clear(Color.TransparentBlack);
 
             spriteBatch.Begin();
-
-            Vector2 scale = new Vector2(horizontalScale, verticalScale);
-            spriteBatch.Draw(texture, Vector2.Zero, null, null, null, 0, scale);
+            spriteBatch.Draw( texture, playerPosition, Color.White );
             spriteBatch.End();
 
             base.Draw(gameTime);
