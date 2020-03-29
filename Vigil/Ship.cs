@@ -11,8 +11,8 @@ namespace Vigil
     public class Ship
     {
         private Vector2 _Velocity;
-        private Vector2 _Angle;
-        private Vector2 _Spin;
+        private float _Angle = 0.0f;
+        private float _Spin;
         private ShipType _Type;
 
         public Ship( ShipType type )
@@ -27,9 +27,19 @@ namespace Vigil
         {
             return _Velocity;
         }
+        public float GetAngle()
+        {
+            return _Angle;
+        }
         internal void AddVelocity(Vector2 velocity)
         {
-            _Velocity += velocity;
+        }
+
+        internal void UpdateMoves(Game1.ShipMovements shipMove)
+        {
+            _Velocity += shipMove.VelocityChange;
+            _Spin += shipMove.SpinChange;
+            _Angle += _Spin;
         }
     }
 }

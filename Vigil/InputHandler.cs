@@ -13,7 +13,7 @@ namespace Vigil
         KeyboardState _oldState;
         KeyboardState _newState;
 
-        public Vector2 Parse( out bool Exit )
+        public Game1.ShipMovements Parse( out bool Exit )
         {
             // Print to debug console currently pressed keys
             System.Text.StringBuilder sb = new StringBuilder();
@@ -25,6 +25,9 @@ namespace Vigil
             Vector2 playerSpeed = new Vector2();
 
             Exit = false;
+            Game1.ShipMovements shipMoves;
+            shipMoves.VelocityChange = new Vector2();
+            shipMoves.SpinChange = 0.0f;
             foreach (var key in _newState.GetPressedKeys())
             {
                 sb.Append("Key: ").Append(key).Append(" pressed ");
@@ -32,18 +35,22 @@ namespace Vigil
                 {
                     case Keys.Escape: Exit = true; break;
                     case Keys.W: { 
-                            if (_oldState.IsKeyUp(Keys.W)) playerSpeed.Y -= 1; break; }
+                            if (_oldState.IsKeyUp(Keys.W)) shipMoves.VelocityChange.Y -= 1; break; }
                     case Keys.A: { 
-                            if (_oldState.IsKeyUp(Keys.A)) playerSpeed.X -= 1; break; }
+                            if (_oldState.IsKeyUp(Keys.A)) shipMoves.VelocityChange.X -= 1; break; }
                     case Keys.S: { 
-                            if (_oldState.IsKeyUp(Keys.S)) playerSpeed.Y += 1; break; }
+                            if (_oldState.IsKeyUp(Keys.S)) shipMoves.VelocityChange.Y += 1; break; }
                     case Keys.D: { 
-                            if (_oldState.IsKeyUp(Keys.D)) playerSpeed.X += 1; break; }
+                            if (_oldState.IsKeyUp(Keys.D)) shipMoves.VelocityChange.X += 1; break; }
+                    case Keys.Q: { 
+                            if (_oldState.IsKeyUp(Keys.Q)) shipMoves.SpinChange -= 0.01f; break; }
+                    case Keys.E: { 
+                            if (_oldState.IsKeyUp(Keys.E)) shipMoves.SpinChange += 0.01f; break; }
                     default: break;
                 }
             }
 
-            return playerSpeed;
+            return shipMoves;
         }
     }
 }

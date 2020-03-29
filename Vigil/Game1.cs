@@ -14,6 +14,12 @@ namespace Vigil
         SpriteBatch spriteBatch;
         InputHandler inputHandler = new InputHandler();
 
+        public struct ShipMovements
+        {
+            public Vector2 VelocityChange;
+            public float SpinChange;
+        }
+
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -30,7 +36,6 @@ namespace Vigil
         {
             // TODO: Add your initialization logic here
             var playerShip = ShipManager.Instance.SpawnShip(ShipType.Corvette);
-            var anotherShip = ShipManager.Instance.SpawnShip(ShipType.Corvette);
             ShipManager.Instance.SetPlayerShip(playerShip);
 
             base.Initialize();
@@ -67,11 +72,11 @@ namespace Vigil
         protected override void Update(GameTime gameTime)
         {
             // Parse current keyboard state and update player speed
-            Vector2 velocity = inputHandler.Parse(out bool exit);
+            ShipMovements shipMove = inputHandler.Parse(out bool exit);
             if (exit)
                 Exit();
 
-            ShipManager.Instance.GetPlayerShip().AddVelocity(velocity);
+            ShipManager.Instance.GetPlayerShip().UpdateMoves(shipMove);
             ShipManager.Instance.UpdatePositions();
 
             base.Update(gameTime);
@@ -88,11 +93,13 @@ namespace Vigil
             spriteBatch.Begin();
             foreach (var shipPos in ShipManager.Instance.GetShipPositions())
             {
-                spriteBatch.Draw(
-                    ShipTextureManager.Instance.GetTexture(shipPos.Key.GetShipType()), 
-                    shipPos.Value,
-                    Color.White
-                );
+                Texture2D texture = ShipTextureManager.Instance.GetTexture(shipPos.Key.GetShipType());
+                Vector2 location = shipPos.Value;
+                Rectangle sourceRectangle = new Rectangle(0, 0, texture.Width, texture.Height);
+                float angle = shipPos.Key.GetAngle();
+                Vector2 origin = new Vector2(0, 0);
+
+                spriteBatch.Draw(texture, location, sourceRectangle, Color.White, angle, origin, 1.0f, SpriteEffects.None, 1);
             }
             spriteBatch.End();
 
