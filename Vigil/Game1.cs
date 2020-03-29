@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System.Collections.Generic;
 
 namespace Vigil
 {
@@ -9,12 +10,9 @@ namespace Vigil
     /// </summary>
     public class Game1 : Game
     {
-        GraphicsDeviceManager graphics;
+        static public GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         InputHandler inputHandler = new InputHandler();
-        Vector2 playerPosition;
-        Vector2 playerSpeed;
-        Texture2D texture;
 
         public Game1()
         {
@@ -31,13 +29,11 @@ namespace Vigil
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
+            var playerShip = ShipManager.Instance.SpawnShip(ShipType.Corvette);
+            var anotherShip = ShipManager.Instance.SpawnShip(ShipType.Corvette);
+            ShipManager.Instance.SetPlayerShip(playerShip);
 
             base.Initialize();
-            playerPosition = new Vector2(
-                graphics.GraphicsDevice.Viewport.Width / 2 - 64,
-                graphics.GraphicsDevice.Viewport.Height / 2 - 64
-            );
-            playerSpeed = new Vector2();
         }
 
         /// <summary>
@@ -48,9 +44,9 @@ namespace Vigil
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
-            texture = this.Content.Load<Texture2D>("spaceship");
 
-            // TODO: use this.Content to load your game content here
+            // Load all shiptype textures
+            ShipTextureManager.Instance.Load(this);
         }
 
         /// <summary>
@@ -71,10 +67,12 @@ namespace Vigil
         protected override void Update(GameTime gameTime)
         {
             // Parse current keyboard state and update player speed
-            playerSpeed += inputHandler.Parse( out bool exit);
+            Vector2 velocity = inputHandler.Parse(out bool exit);
+            if (exit)
+                Exit();
 
-            // Update player position based on speed
-            playerPosition += playerSpeed;
+            ShipManager.Instance.GetPlayerShip().AddVelocity(velocity);
+            ShipManager.Instance.UpdatePositions();
 
             base.Update(gameTime);
         }
@@ -88,7 +86,14 @@ namespace Vigil
             GraphicsDevice.Clear(Color.TransparentBlack);
 
             spriteBatch.Begin();
-            spriteBatch.Draw( texture, playerPosition, Color.White );
+            foreach (var shipPos in ShipManager.Instance.GetShipPositions())
+            {
+                spriteBatch.Draw(
+                    ShipTextureManager.Instance.GetTexture(shipPos.Key.GetShipType()), 
+                    shipPos.Value,
+                    Color.White
+                );
+            }
             spriteBatch.End();
 
             base.Draw(gameTime);

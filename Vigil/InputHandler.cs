@@ -31,10 +31,14 @@ namespace Vigil
                 switch (key)
                 {
                     case Keys.Escape: Exit = true; break;
-                    case Keys.W: playerSpeed.X += 1; break;
-                    case Keys.S: playerSpeed.X -= 1; break;
-                    case Keys.D: playerSpeed.Y += 1; break;
-                    case Keys.A: playerSpeed.Y -= 1; break;
+                    case Keys.W: { 
+                            if (_oldState.IsKeyUp(Keys.W)) playerSpeed.Y -= 1; break; }
+                    case Keys.A: { 
+                            if (_oldState.IsKeyUp(Keys.A)) playerSpeed.X -= 1; break; }
+                    case Keys.S: { 
+                            if (_oldState.IsKeyUp(Keys.S)) playerSpeed.Y += 1; break; }
+                    case Keys.D: { 
+                            if (_oldState.IsKeyUp(Keys.D)) playerSpeed.X += 1; break; }
                     default: break;
                 }
             }
