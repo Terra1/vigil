@@ -97,7 +97,7 @@ namespace Vigil
                 Vector2 location = shipPos.Value;
                 Rectangle sourceRectangle = new Rectangle(0, 0, texture.Width, texture.Height);
                 float angle = shipPos.Key.GetAngle();
-                Vector2 origin = new Vector2(0, 0);
+                Vector2 origin = new Vector2(texture.Width / 2, texture.Height / 2);
 
                 spriteBatch.Draw(texture, location, sourceRectangle, Color.White, angle, origin, 1.0f, SpriteEffects.None, 1);
             }
