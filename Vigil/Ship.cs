@@ -35,7 +35,7 @@ namespace Vigil
         {
         }
 
-        internal void UpdateMoves(Game1.ShipMovements shipMove)
+        internal void UpdateMoves(Vigil.ShipMovements shipMove)
         {
             _Velocity += shipMove.VelocityChange;
             _Spin += shipMove.SpinChange;

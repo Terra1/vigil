@@ -19,7 +19,7 @@ namespace Vigil
         }
         public static ShipTextureManager Instance { get { return lazy.Value; } }
         private List<ShipTexture> _ShipTextures = new List<ShipTexture>();
-        public void Load(Game1 game)
+        public void Load(Vigil game)
         {
             foreach (ShipType type in Enum.GetValues(typeof(ShipType)).Cast<ShipType>())
             {
@@ -64,10 +64,12 @@ namespace Vigil
             _PlayerShip = ship;
 
             ShipPosition oldPos = _ShipPositions.Find(item => item.Key == ship);
-            Vector2 position = new Vector2(
-                    Game1.graphics.GraphicsDevice.Viewport.Width / 2 - 64,
-                    Game1.graphics.GraphicsDevice.Viewport.Height / 2 - 64
-                );
+            Vector2 position = new Vector2(1024, 1024);
+                
+                /* new Vector2(
+                    Vigil.graphics.GraphicsDevice.Viewport.Width / 2 - 64,
+                    Vigil.graphics.GraphicsDevice.Viewport.Height / 2 - 64
+                ); */
             ShipPosition newPos = new ShipPosition(oldPos.Key, position);
             _ShipPositions.Remove(oldPos);
             _ShipPositions.Add(newPos);
@@ -89,6 +91,10 @@ namespace Vigil
         public List<ShipPosition> GetShipPositions()
         {
             return _ShipPositions;
+        }
+        public Vector2 GetShipPosition( Ship ship )
+        {
+            return _ShipPositions.Where( x => x.Key == ship ).ToList().FirstOrDefault().Value;
         }
         public bool DestroyShip( Ship ship )
         {

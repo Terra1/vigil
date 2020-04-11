@@ -8,11 +8,11 @@ namespace Vigil
     /// <summary>
     /// This is the main type for your game.
     /// </summary>
-    public class Game1 : Game
+    public class Vigil : Game
     {
         static public GraphicsDeviceManager graphics;
-        SpriteBatch spriteBatch;
-        InputHandler inputHandler = new InputHandler();
+        InputHandler _InputHandler = new InputHandler();
+        DrawHandler _DrawHandler;
 
         public struct ShipMovements
         {
@@ -20,8 +20,9 @@ namespace Vigil
             public float SpinChange;
         }
 
-        public Game1()
+        public Vigil()
         {
+            // Init graphics
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
         }
@@ -34,7 +35,8 @@ namespace Vigil
         /// </summary>
         protected override void Initialize()
         {
-            // TODO: Add your initialization logic here
+            _DrawHandler = new DrawHandler(graphics);
+
             var playerShip = ShipManager.Instance.SpawnShip(ShipType.Corvette);
             ShipManager.Instance.SetPlayerShip(playerShip);
 
@@ -47,8 +49,8 @@ namespace Vigil
         /// </summary>
         protected override void LoadContent()
         {
-            // Create a new SpriteBatch, which can be used to draw textures.
-            spriteBatch = new SpriteBatch(GraphicsDevice);
+            // Init the Draw Handler
+            _DrawHandler.Load(this);
 
             // Load all shiptype textures
             ShipTextureManager.Instance.Load(this);
@@ -72,7 +74,7 @@ namespace Vigil
         protected override void Update(GameTime gameTime)
         {
             // Parse current keyboard state and update player speed
-            ShipMovements shipMove = inputHandler.Parse(out bool exit);
+            ShipMovements shipMove = _InputHandler.Parse(out bool exit);
             if (exit)
                 Exit();
 
@@ -88,21 +90,7 @@ namespace Vigil
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.TransparentBlack);
-
-            spriteBatch.Begin();
-            foreach (var shipPos in ShipManager.Instance.GetShipPositions())
-            {
-                Texture2D texture = ShipTextureManager.Instance.GetTexture(shipPos.Key.GetShipType());
-                Vector2 location = shipPos.Value;
-                Rectangle sourceRectangle = new Rectangle(0, 0, texture.Width, texture.Height);
-                float angle = shipPos.Key.GetAngle();
-                Vector2 origin = new Vector2(texture.Width / 2, texture.Height / 2);
-
-                spriteBatch.Draw(texture, location, sourceRectangle, Color.White, angle, origin, 1.0f, SpriteEffects.None, 1);
-            }
-            spriteBatch.End();
-
+            _DrawHandler.Update();
             base.Draw(gameTime);
         }
     }

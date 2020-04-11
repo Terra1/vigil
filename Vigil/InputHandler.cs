@@ -13,19 +13,18 @@ namespace Vigil
         KeyboardState _oldState;
         KeyboardState _newState;
 
-        public Game1.ShipMovements Parse( out bool Exit )
+        public Vigil.ShipMovements Parse( out bool Exit )
         {
             // Print to debug console currently pressed keys
             System.Text.StringBuilder sb = new StringBuilder();
 
-            KeyboardState _oldState = _newState;
+            _oldState = _newState;
             _newState = Keyboard.GetState();
 
             Keys[] pressed_Key = _newState.GetPressedKeys();
-            Vector2 playerSpeed = new Vector2();
 
             Exit = false;
-            Game1.ShipMovements shipMoves;
+            Vigil.ShipMovements shipMoves;
             shipMoves.VelocityChange = new Vector2();
             shipMoves.SpinChange = 0.0f;
             foreach (var key in _newState.GetPressedKeys())
