@@ -24,14 +24,15 @@ namespace Vigil
         {
             _Background = game.Content.Load<Texture2D>("background");
         }
-        public void Update()
+        public void Update(Vigil game)
         {
             _GDM.GraphicsDevice.Clear(Color.TransparentBlack);
 
             var ShipMgrInstance = ShipManager.Instance;
+            var PlayerShip = ShipMgrInstance.GetPlayerShip();
 
             //This will move our camera
-            ScrollCamera(_Sprites.GraphicsDevice.Viewport, ShipMgrInstance.GetShipPosition(ShipMgrInstance.GetPlayerShip()));
+            ScrollCamera(_Sprites.GraphicsDevice.Viewport, ShipMgrInstance.GetShipPosition(PlayerShip));
 
             //We now must get the center of the screen
             Vector2 Origin = new Vector2(_Sprites.GraphicsDevice.Viewport.Width / 2.0f, _Sprites.GraphicsDevice.Viewport.Height / 2.0f);
@@ -62,6 +63,14 @@ namespace Vigil
 
             _Sprites.End(); //End the camera spritebatch
                             // After this you can make another spritebatch without a camera to draw UI and things that will not move
+
+            _Sprites.Begin();
+            _Sprites.DrawString(game.DebugFont, "Velocity: " + PlayerShip.GetVelocity().ToString(), new Vector2(20, 20), Color.White);
+            _Sprites.DrawString(game.DebugFont, "Thrust: " + PlayerShip.GetThrust().ToString(), new Vector2(20, 40), Color.White);
+            _Sprites.DrawString(game.DebugFont, "Spin: " + PlayerShip.GetSpin().ToString(), new Vector2(20, 60), Color.White);
+            _Sprites.DrawString(game.DebugFont, "Angle: " + PlayerShip.GetAngle().ToString(), new Vector2(20, 80), Color.White);
+            _Sprites.DrawString(game.DebugFont, "Coordinates: " + ShipMgrInstance.GetShipPosition(PlayerShip), new Vector2(20, 100), Color.White);
+            _Sprites.End();
         }
 
         private void ScrollCamera(Viewport viewport, Vector2 PlayerPosition )

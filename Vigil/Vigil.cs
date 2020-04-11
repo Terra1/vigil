@@ -14,9 +14,12 @@ namespace Vigil
         InputHandler _InputHandler = new InputHandler();
         DrawHandler _DrawHandler;
 
+        public SpriteFont DebugFont;
+
         public struct ShipMovements
         {
             public Vector2 VelocityChange;
+            public float ThrustChange;
             public float SpinChange;
         }
 
@@ -54,6 +57,7 @@ namespace Vigil
 
             // Load all shiptype textures
             ShipTextureManager.Instance.Load(this);
+            DebugFont = Content.Load<SpriteFont>("debug");
         }
 
         /// <summary>
@@ -90,7 +94,7 @@ namespace Vigil
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-            _DrawHandler.Update();
+            _DrawHandler.Update(this);
             base.Draw(gameTime);
         }
     }

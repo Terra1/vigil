@@ -49,3 +49,10 @@
 /processorParam:TextureFormat=Color
 /build:Corvette.png
 
+#begin debug.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:debug.spritefont
+

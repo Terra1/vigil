@@ -27,6 +27,7 @@ namespace Vigil
             Vigil.ShipMovements shipMoves;
             shipMoves.VelocityChange = new Vector2();
             shipMoves.SpinChange = 0.0f;
+            shipMoves.ThrustChange = 0.0f;
             foreach (var key in _newState.GetPressedKeys())
             {
                 sb.Append("Key: ").Append(key).Append(" pressed ");
@@ -34,17 +35,17 @@ namespace Vigil
                 {
                     case Keys.Escape: Exit = true; break;
                     case Keys.W: { 
-                            if (_oldState.IsKeyUp(Keys.W)) shipMoves.VelocityChange.Y -= 1; break; }
-                    case Keys.A: { 
-                            if (_oldState.IsKeyUp(Keys.A)) shipMoves.VelocityChange.X -= 1; break; }
+                            if (_oldState.IsKeyUp(Keys.W)) shipMoves.ThrustChange += 0.001f; break; }
                     case Keys.S: { 
-                            if (_oldState.IsKeyUp(Keys.S)) shipMoves.VelocityChange.Y += 1; break; }
+                            if (_oldState.IsKeyUp(Keys.S)) shipMoves.ThrustChange -= 0.001f; break; }
+                    //case Keys.S: { 
+                    //        if (_oldState.IsKeyUp(Keys.S)) shipMoves.VelocityChange.Y += 1; break; }
+                    //case Keys.D: { 
+                    //        if (_oldState.IsKeyUp(Keys.D)) shipMoves.VelocityChange.X += 1; break; }
+                    case Keys.A: { 
+                            if (_oldState.IsKeyUp(Keys.A)) shipMoves.SpinChange -= 0.01f; break; }
                     case Keys.D: { 
-                            if (_oldState.IsKeyUp(Keys.D)) shipMoves.VelocityChange.X += 1; break; }
-                    case Keys.Q: { 
-                            if (_oldState.IsKeyUp(Keys.Q)) shipMoves.SpinChange -= 0.01f; break; }
-                    case Keys.E: { 
-                            if (_oldState.IsKeyUp(Keys.E)) shipMoves.SpinChange += 0.01f; break; }
+                            if (_oldState.IsKeyUp(Keys.D)) shipMoves.SpinChange += 0.01f; break; }
                     default: break;
                 }
             }
