@@ -1,14 +1,12 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
-using System.Collections.Generic;
 
 namespace Vigil
 {
     /// <summary>
     /// This is the main type for your game.
     /// </summary>
-    public class Vigil : Game
+    public class VigilClient : Game
     {
         static public GraphicsDeviceManager graphics;
         InputHandler _InputHandler = new InputHandler();
@@ -16,14 +14,7 @@ namespace Vigil
 
         public SpriteFont DebugFont;
 
-        public struct ShipMovements
-        {
-            public Vector2 VelocityChange;
-            public float ThrustChange;
-            public float SpinChange;
-        }
-
-        public Vigil()
+        public VigilClient()
         {
             // Init graphics
             graphics = new GraphicsDeviceManager(this);
@@ -40,7 +31,7 @@ namespace Vigil
         {
             _DrawHandler = new DrawHandler(graphics);
 
-            var playerShip = ShipManager.Instance.SpawnShip(ShipType.Corvette);
+            var playerShip = ShipManager.Instance.SpawnShip( ShipType.Corvette );
             ShipManager.Instance.SetPlayerShip(playerShip);
 
             base.Initialize();

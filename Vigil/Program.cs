@@ -14,7 +14,7 @@ namespace Vigil
         [STAThread]
         static void Main()
         {
-            using (var game = new Vigil())
+            using (var game = new VigilClient())
                 game.Run();
         }
     }

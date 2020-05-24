@@ -10,7 +10,6 @@ namespace Vigil
 {
     using ShipPosition = KeyValuePair<Ship, Vector2>;
     using ShipTexture = KeyValuePair<ShipType, Texture2D>;
-    public enum ShipType { Frigate, Corvette, Battleship, Carrier, Titan }
     public sealed class ShipTextureManager
     {
         private static readonly Lazy<ShipTextureManager> lazy = new Lazy<ShipTextureManager>(() => new ShipTextureManager());
@@ -19,7 +18,7 @@ namespace Vigil
         }
         public static ShipTextureManager Instance { get { return lazy.Value; } }
         private List<ShipTexture> _ShipTextures = new List<ShipTexture>();
-        public void Load(Vigil game)
+        public void Load(VigilClient game)
         {
             foreach (ShipType type in Enum.GetValues(typeof(ShipType)).Cast<ShipType>())
             {

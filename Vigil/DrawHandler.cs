@@ -20,11 +20,11 @@ namespace Vigil
             _GDM = GDM;
             _Sprites = new SpriteBatch(_GDM.GraphicsDevice);
         }
-        public void Load(Vigil game)
+        public void Load(VigilClient game)
         {
             _Background = game.Content.Load<Texture2D>("background");
         }
-        public void Update(Vigil game)
+        public void Update(VigilClient game)
         {
             _GDM.GraphicsDevice.Clear(Color.TransparentBlack);
 

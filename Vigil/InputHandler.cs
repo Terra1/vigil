@@ -13,7 +13,7 @@ namespace Vigil
         KeyboardState _oldState;
         KeyboardState _newState;
 
-        public Vigil.ShipMovements Parse( out bool Exit )
+        public ShipMovements Parse( out bool Exit )
         {
             // Print to debug console currently pressed keys
             System.Text.StringBuilder sb = new StringBuilder();
@@ -24,10 +24,7 @@ namespace Vigil
             Keys[] pressed_Key = _newState.GetPressedKeys();
 
             Exit = false;
-            Vigil.ShipMovements shipMoves;
-            shipMoves.VelocityChange = new Vector2();
-            shipMoves.SpinChange = 0.0f;
-            shipMoves.ThrustChange = 0.0f;
+            ShipMovements shipMoves = new ShipMovements();
             foreach (var key in _newState.GetPressedKeys())
             {
                 sb.Append("Key: ").Append(key).Append(" pressed ");
